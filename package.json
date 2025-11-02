@@ -1,16 +1,37 @@
 {
-  "name": "naina",
+  "name": "smart-reporting",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/dom": "^10.4.1",
-    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
+    "@types/react-datepicker": "^6.2.0",
+    "bootstrap": "^5.3.5",
+    "chart.js": "^4.5.0",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "google-reviews-widget": "^1.0.4",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.2",
+    "lodash": "^4.17.21",
+    "lucide-react": "^0.544.0",
+    "papaparse": "^5.5.3",
+    "react": "^18.3.1",
+    "react-chartjs-2": "^5.3.0",
+    "react-datepicker": "^8.7.0",
+    "react-dom": "^18.3.1",
+    "react-lazy-load-image-component": "^1.6.3",
+    "react-quill": "^2.0.0",
+    "react-router-dom": "^7.9.5",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "react-time-picker": "^8.0.2",
+    "react-toastify": "^11.0.5",
+    "recharts": "^3.2.0",
+    "video.js": "^8.23.4",
+    "videojs-youtube": "^3.0.1",
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -35,5 +56,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/video.js": "^7.3.58",
+    "tailwindcss": "^3.4.18"
   }
 }
