@@ -339,7 +339,7 @@ export default function NainaSalonWebsite() {
                 </div>
                 <div className="contact-item">
                   <Phone className="contact-icon" />
-                  <span>+91 98765 43210</span>
+                  <span>+91 87507 86726</span>
                 </div>
                 <div className="contact-item">
                   <Mail className="contact-icon" />
@@ -347,7 +347,7 @@ export default function NainaSalonWebsite() {
                 </div>
                 <div className="contact-item">
                   <Clock className="contact-icon" />
-                  <span>Mon-Sun: 9:00 AM - 8:00 PM</span>
+                  <span>Mon-Sun: 10:00 AM - 8:00 PM</span>
                 </div>
                 <div className="contact-item">
                   <Instagram className="contact-icon" />
@@ -430,8 +430,8 @@ export default function NainaSalonWebsite() {
           <div className="footer-social">
                 <a
                   href="https://www.instagram.com/nainaartistrymakeover/"
-                  target="_blank"
-                  rel="noopener noreferrer"                  
+                  // target="_blank"
+                  // rel="noopener noreferrer"                  
                 >
                 <Instagram className="social-icon" />
                 </a>
