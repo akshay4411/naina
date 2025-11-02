@@ -20,7 +20,7 @@ export default function NainaSalonWebsite() {
       name: "Bridal Makeup",
       price: "₹25,000+",
       duration: "3-4 hours",
-      image: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=800&h=600&fit=crop",
+      image: "https://i.postimg.cc/zf4pR7FV/Screenshot-521.png",
       description: "Complete bridal transformation with premium products"
     },
     {
