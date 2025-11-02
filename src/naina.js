@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Instagram, MapPin, Phone, Mail, Star, Clock, Award, Sparkles, ChevronRight, Send } from 'lucide-react';
 import './naina-react.css';
+import { Calendar, Instagram, MapPin, Phone, Mail, Star, Clock, Award, Sparkles, ChevronRight, Send, CheckCircle2, Shield, Users } from 'lucide-react';
+
 
 export default function NainaSalonWebsite() {
   const [activeSection, setActiveSection] = useState('home');
@@ -14,7 +15,12 @@ export default function NainaSalonWebsite() {
     date: '',
     details: ''
   });
-
+ const certifications = [
+    { icon: Award, text: "Certified Makeup Professional" },
+    { icon: Shield, text: "Premium Product Guarantee" },
+    { icon: Users, text: "1,867+ Happy Clients" },
+    { icon: CheckCircle2, text: "100% Client Satisfaction" }
+  ];
   const services = [
     {
       id: 1,
@@ -167,7 +173,7 @@ Details: ${bookingData.details}`;
               </div>
             </motion.div>
             <div className="nav-links">
-              {['Home', 'Services', 'Gallery', 'Reviews', 'Contact'].map((item, index) => (
+              {['Home', 'About','Services', 'Gallery', 'Reviews', 'Contact'].map((item, index) => (
                 <motion.button
                   key={item}
                   onClick={() => scrollToSection(item.toLowerCase())}
@@ -295,6 +301,61 @@ Details: ${bookingData.details}`;
               />
             </motion.div>
           </div>
+        </div>
+      </section>
+      {/* About Section */}
+      <section id="about" className="about-section">
+        <div className="section-container">
+          <motion.div 
+            className="about-content"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeInUp}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="about-header">
+              <h2 className="section-title">About Naina Arora</h2>
+              <p className="section-subtitle">Your trusted beauty partner since 2016</p>
+            </div>
+            <div className="about-grid">
+              <motion.div 
+                className="about-text"
+                variants={slideInLeft}
+                transition={{ duration: 0.6 }}
+              >
+                <p className="about-description">
+                  With over 9 years of experience in the beauty industry, I specialize in creating stunning bridal and party looks that enhance your natural beauty. My passion for makeup artistry began with a simple belief: every woman deserves to feel confident and beautiful on her special day.
+                </p>
+                <p className="about-description">
+                  I use only premium, internationally acclaimed products and stay updated with the latest trends and techniques. Based in Sector 3, Faridabad, I've had the privilege of being part of over 1,800 beautiful journeys, from intimate gatherings to grand celebrations.
+                </p>
+                <p className="about-description">
+                  My approach is personalized and collaborative. I take time to understand your vision, skin type, and preferences to create a look that's uniquely yours. Your satisfaction is my success.
+                </p>
+              </motion.div>
+              <motion.div 
+                className="certifications-grid"
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                {certifications.map((cert, index) => (
+                  <motion.div
+                    key={index}
+                    className="certification-card"
+                    variants={scaleIn}
+                    transition={{ duration: 0.4 }}
+                    whileHover={{ y: -5 }}
+                  >
+                    <cert.icon className="cert-icon" />
+                    <p className="cert-text">{cert.text}</p>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -502,6 +563,8 @@ Details: ${bookingData.details}`;
             transition={{ duration: 0.6 }}
           >
             <h2 className="section-title">Client Reviews</h2>
+            
+            
             <motion.div 
               className="rating-display"
               initial={{ scale: 0 }}
@@ -522,7 +585,9 @@ Details: ${bookingData.details}`;
               ))}
               <span className="rating-number">5.0</span>
             </motion.div>
+            
             <p className="section-subtitle">Based on 200+ Google Reviews</p>
+            
           </motion.div>
           <motion.div 
             className="reviews-grid"
@@ -557,9 +622,12 @@ Details: ${bookingData.details}`;
                   <p className="review-author">{review.name}</p>
                   <p className="review-date">{review.date}</p>
                 </div>
+                
               </motion.div>
+              
             ))}
           </motion.div>
+          
         </div>
       </section>
 
@@ -693,6 +761,8 @@ Details: ${bookingData.details}`;
           </div>
         </div>
       </section>
+      
+
 
       {/* Footer */}
       <motion.footer 

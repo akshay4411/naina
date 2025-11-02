@@ -17,9 +17,17 @@ html {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     line-height: 1.6;
     color: #1f2937;
+}
+
+h1, h2, h3, h4, h5, h6,
+.hero-title,
+.section-title,
+.form-title,
+.footer-logo h3 {
+    font-family: 'Playfair Display', serif;
 }
 
 img {
@@ -279,6 +287,78 @@ select {
     width: 100%;
     border-radius: 1.5rem;
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+}
+
+/* ==================== ABOUT SECTION ==================== */
+.about-section {
+    padding: 5rem 1rem;
+    background: linear-gradient(to bottom, #ffffff, #fdf2f8);
+}
+
+.about-content {
+    max-width: 80rem;
+    margin: 0 auto;
+}
+
+.about-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+.about-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.about-description {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #4b5563;
+    font-family: 'Inter', sans-serif;
+}
+
+.certifications-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.certification-card {
+    background: white;
+    padding: 2rem 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.certification-card:hover {
+    box-shadow: 0 10px 20px rgba(236, 72, 153, 0.15);
+    transform: translateY(-5px);
+}
+
+.cert-icon {
+    width: 3rem;
+    height: 3rem;
+    color: #ec4899;
+}
+
+.cert-text {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1f2937;
 }
 
 /* ==================== SERVICES SECTION ==================== */
@@ -659,7 +739,7 @@ select {
 .review-footer {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .review-author {
@@ -667,9 +747,24 @@ select {
     color: #1f2937;
 }
 
+.review-verified {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    color: #10b981;
+    margin-top: 0.25rem;
+}
+
+.verified-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+}
+
 .review-date {
     font-size: 0.875rem;
     color: #6b7280;
+    text-align: right;
 }
 
 /* ==================== CONTACT SECTION ==================== */
@@ -710,17 +805,31 @@ select {
     align-items: center;
     gap: 1rem;
     font-size: 1.125rem;
+    transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+    transform: translateX(10px);
+}
+
+.contact-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: inherit;
+    text-decoration: none;
 }
 
 .contact-icon {
     width: 1.5rem;
     height: 1.5rem;
+    flex-shrink: 0;
 }
 
 .contact-form-wrapper {
     background: white;
     border-radius: 1.5rem;
-    padding: 2rem;
+    padding: 2.5rem;
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
 }
 
@@ -728,49 +837,99 @@ select {
     font-size: 1.875rem;
     font-weight: 800;
     color: #1f2937;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-family: 'Playfair Display', serif;
+}
+
+.form-subtitle {
+    font-size: 1rem;
+    color: #6b7280;
+    margin-bottom: 2rem;
 }
 
 .booking-form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .form-input {
-    padding: 1rem;
+    padding: 1rem 1.25rem;
     border: 2px solid #e5e7eb;
-    border-radius: 0.5rem;
+    border-radius: 0.75rem;
     font-size: 1rem;
     color: #1f2937;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
 }
 
 .form-input:focus {
     outline: none;
     border-color: #ec4899;
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+}
+
+.form-input.error {
+    border-color: #ef4444;
+}
+
+.form-input.error:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
 .form-input::placeholder {
     color: #9ca3af;
 }
 
+.error-message {
+    color: #ef4444;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.character-count {
+    color: #6b7280;
+    font-size: 0.875rem;
+    text-align: right;
+}
+
 .submit-btn {
     background: linear-gradient(135deg, #ec4899, #9333ea);
     color: white;
-    padding: 1rem;
-    border-radius: 0.5rem;
+    padding: 1.25rem;
+    border-radius: 0.75rem;
     font-weight: 600;
+    font-size: 1.125rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
     transition: all 0.3s ease;
+    margin-top: 1rem;
 }
 
-.submit-btn:hover {
+.submit-btn:hover:not(:disabled) {
     box-shadow: 0 20px 25px rgba(236, 72, 153, 0.3);
     transform: translateY(-2px);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.form-disclaimer {
+    font-size: 0.875rem;
+    color: #6b7280;
+    text-align: center;
+    margin-top: -0.5rem;
 }
 
 /* ==================== FOOTER ==================== */
@@ -807,6 +966,13 @@ select {
 
 .footer-subtitle {
     color: #9ca3af;
+    margin-bottom: 0.5rem;
+}
+
+.footer-tagline {
+    color: #9ca3af;
+    font-size: 0.875rem;
+    font-style: italic;
     margin-bottom: 1.5rem;
 }
 
@@ -817,21 +983,38 @@ select {
     margin-bottom: 1.5rem;
 }
 
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    background: rgba(236, 72, 153, 0.2);
+    transform: translateY(-3px);
+}
+
 .social-icon {
     width: 1.5rem;
     height: 1.5rem;
     color: white;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.social-icon:hover {
-    color: #ec4899;
 }
 
 .footer-copyright {
     color: #6b7280;
     font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+.footer-credit {
+    color: #6b7280;
+    font-size: 0.75rem;
+    font-style: italic;
 }
 
 /* ==================== RESPONSIVE DESIGN ==================== */
@@ -860,6 +1043,14 @@ select {
     
     .hero-buttons {
         flex-direction: column;
+    }
+    
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .certifications-grid {
+        grid-template-columns: 1fr;
     }
     
     .primary-btn,
