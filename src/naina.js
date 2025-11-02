@@ -86,18 +86,19 @@ export default function NainaSalonWebsite() {
     setBookingData({ ...bookingData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert('Thank you! We will contact you shortly to confirm your appointment.');
-    setBookingData({
-      name: '',
-      phone: '',
-      email: '',
-      service: '',
-      date: '',
-      details: '',
-    });
-  };
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const message = `Booking Request:
+    Name: ${bookingData.name}
+    Phone: ${bookingData.phone}
+    Email: ${bookingData.email}
+    Service: ${bookingData.service}
+    Date: ${bookingData.date}
+    Details: ${bookingData.details}`;
+
+      window.open(`https://wa.me/919315719114?text=${encodeURIComponent(message)}`, "_blank");
+    };
+
 
   const scrollToSection = (id) => {
     setActiveSection(id);
@@ -262,6 +263,7 @@ export default function NainaSalonWebsite() {
           </div>
         </div>
       </section>
+
 
       {/* Gallery Section */}
       <section id="gallery" className="gallery-section">
