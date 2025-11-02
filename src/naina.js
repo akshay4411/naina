@@ -343,7 +343,7 @@ export default function NainaSalonWebsite() {
                 </div>
                 <div className="contact-item">
                   <Mail className="contact-icon" />
-                  <span>naina@example.com</span>
+                  <span>neweee.arora1@gmail.com</span>
                 </div>
                 <div className="contact-item">
                   <Clock className="contact-icon" />
