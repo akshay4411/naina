@@ -44,7 +44,7 @@ export default function NainaSalonWebsite() {
       name: "Hair Styling",
       price: "₹3,000+",
       duration: "1 hour",
-      image: "https://plus.unsplash.com/premium_photo-1669675935372-d76b0b8808df?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=688",
+      image: "https://plus.unsplash.com/premium_photo-1669675935372-d76b0b8808df?ixlib=rb-4.1.0&auto=format&fit=crop&q=80&w=688",
       description: "Professional hairstyling for any occasion"
     }
   ];
@@ -82,23 +82,30 @@ export default function NainaSalonWebsite() {
     }
   ];
 
-const handleInputChange = (e) => {
-  setBookingData({ ...bookingData, [e.target.name]: e.target.value });
-};
+  const handleInputChange = (e) => {
+    setBookingData({ ...bookingData, [e.target.name]: e.target.value });
+  };
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  alert('Thank you! We will contact you shortly to confirm your appointment.');
-  setBookingData({
-    name: '',
-    phone: '',
-    email: '',
-    service: '',
-    date: '',
-    details: '',
-  });
-};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert('Thank you! We will contact you shortly to confirm your appointment.');
+    setBookingData({
+      name: '',
+      phone: '',
+      email: '',
+      service: '',
+      date: '',
+      details: '',
+    });
+  };
 
+  const scrollToSection = (id) => {
+    setActiveSection(id);
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <div className="salon-website">
@@ -117,22 +124,22 @@ const handleSubmit = (e) => {
               {['Home', 'Services', 'Gallery', 'Reviews', 'Contact'].map((item) => (
                 <button
                   key={item}
-                  onClick={() => setActiveSection(item.toLowerCase())}
+                  onClick={() => scrollToSection(item.toLowerCase())}
                   className={`nav-button ${activeSection === item.toLowerCase() ? 'active' : ''}`}
                 >
                   {item}
                 </button>
               ))}
             </div>
-            <a href="tel:+919876543210" className="book-now-btn">
+            <button className="book-now-btn" onClick={() => scrollToSection('contact')}>
               Book Now
-            </a>
+            </button>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="hero-section">
+      <section id="home" className="hero-section">
         <div className="hero-container">
           <div className="hero-grid">
             <div className="hero-content">
@@ -148,14 +155,19 @@ const handleSubmit = (e) => {
                 Expert bridal & party makeup with 1,867+ stunning transformations. Located in Sector 3, Faridabad.
               </p>
               <div className="hero-buttons">
-                <button className="primary-btn">
+                <button className="primary-btn" onClick={() => scrollToSection('contact')}>
                   <Calendar className="btn-icon" />
                   <span>Book Appointment</span>
                 </button>
-                <button className="secondary-btn">
+                <a
+                  href="https://www.instagram.com/nainaartistrymakeover/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="secondary-btn"
+                >
                   <Instagram className="btn-icon" />
                   <span>View Portfolio</span>
-                </button>
+                </a>
               </div>
               <div className="hero-stats">
                 <div className="stat-item">
@@ -185,7 +197,7 @@ const handleSubmit = (e) => {
       </section>
 
       {/* Services Section */}
-      <section className="services-section">
+      <section id="services" className="services-section">
         <div className="section-container">
           <div className="section-header">
             <h2 className="section-title">Our Services</h2>
@@ -219,7 +231,7 @@ const handleSubmit = (e) => {
       </section>
 
       {/* Packages Section */}
-      <section className="packages-section">
+      <section id="packages" className="packages-section">
         <div className="section-container">
           <div className="section-header">
             <h2 className="section-title">Special Packages</h2>
@@ -231,9 +243,7 @@ const handleSubmit = (e) => {
                 key={idx}
                 className={`package-card ${pkg.popular ? 'popular' : ''}`}
               >
-                {pkg.popular && (
-                  <div className="package-badge">MOST POPULAR</div>
-                )}
+                {pkg.popular && <div className="package-badge">MOST POPULAR</div>}
                 <h3 className="package-name">{pkg.name}</h3>
                 <p className="package-price">{pkg.price}</p>
                 <ul className="package-features">
@@ -244,7 +254,7 @@ const handleSubmit = (e) => {
                     </li>
                   ))}
                 </ul>
-                <button className="package-btn">
+                <button className="package-btn" onClick={() => scrollToSection('contact')}>
                   Select Package
                 </button>
               </div>
@@ -253,8 +263,8 @@ const handleSubmit = (e) => {
         </div>
       </section>
 
-      {/* Before/After Gallery */}
-      <section className="gallery-section">
+      {/* Gallery Section */}
+      <section id="gallery" className="gallery-section">
         <div className="section-container">
           <div className="section-header">
             <h2 className="section-title">Transformation Gallery</h2>
@@ -280,7 +290,7 @@ const handleSubmit = (e) => {
       </section>
 
       {/* Reviews Section */}
-      <section className="reviews-section">
+      <section id="reviews" className="reviews-section">
         <div className="section-container">
           <div className="section-header">
             <h2 className="section-title">Client Reviews</h2>
@@ -312,7 +322,7 @@ const handleSubmit = (e) => {
       </section>
 
       {/* Contact Section */}
-      <section className="contact-section">
+      <section id="contact" className="contact-section">
         <div className="section-container">
           <div className="contact-grid">
             <div className="contact-info">
@@ -416,9 +426,28 @@ const handleSubmit = (e) => {
           </div>
           <p className="footer-subtitle">Professional Makeup Artist & Hair Stylist</p>
           <div className="footer-social">
-            <Instagram className="social-icon" />
-            <Phone className="social-icon" />
-            <Mail className="social-icon" />
+                <a
+                  href="https://www.instagram.com/nainaartistrymakeover/"
+                  target="_blank"
+                  rel="noopener noreferrer"                  
+                >
+                <Instagram className="social-icon" />
+                </a>
+         
+          
+                {/* Clickable icons */}
+                <a href="tel:8750786726" className="contact-item">
+                  <Phone className="social-icon" />
+                  {/* <span>8750786726</span> */}
+                </a>
+                <a href="mailto:neweee.arora1@gmail.com" className="contact-item">
+                  <Mail className="social-icon" />
+                  {/* <span>neweee.arora1@gmail.com</span> */}
+                </a>
+                <a href="https://share.google/kv06UsyC2i6HjrenT" target="_blank" rel="noopener noreferrer" className="contact-item">
+                  <MapPin className="social-icon" />
+                  {/* <span>2211 Sector 3, Near Tagore Academy, Faridabad 121004</span> */}
+                </a>
           </div>
           <p className="footer-copyright">© 2024 Naina Arora. All rights reserved.</p>
         </div>
