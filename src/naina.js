@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Calendar, Instagram, MapPin, Phone, Mail, Star, Clock, Award, Sparkles, ChevronRight, Send } from 'lucide-react';
 import './naina-react.css';
 
@@ -86,19 +87,18 @@ export default function NainaSalonWebsite() {
     setBookingData({ ...bookingData, [e.target.name]: e.target.value });
   };
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      const message = `Booking Request:
-    Name: ${bookingData.name}
-    Phone: ${bookingData.phone}
-    Email: ${bookingData.email}
-    Service: ${bookingData.service}
-    Date: ${bookingData.date}
-    Details: ${bookingData.details}`;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const message = `Booking Request:
+Name: ${bookingData.name}
+Phone: ${bookingData.phone}
+Email: ${bookingData.email}
+Service: ${bookingData.service}
+Date: ${bookingData.date}
+Details: ${bookingData.details}`;
 
-      window.open(`https://wa.me/919315719114?text=${encodeURIComponent(message)}`, "_blank");
-    };
-
+    window.open(`https://wa.me/919315719114?text=${encodeURIComponent(message)}`, "_blank");
+  };
 
   const scrollToSection = (id) => {
     setActiveSection(id);
@@ -108,91 +108,192 @@ export default function NainaSalonWebsite() {
     }
   };
 
+  // Animation variants
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0 }
+  };
+
+  const fadeIn = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 }
+  };
+
+  const scaleIn = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1 }
+  };
+
+  const slideInLeft = {
+    hidden: { opacity: 0, x: -60 },
+    visible: { opacity: 1, x: 0 }
+  };
+
+  const slideInRight = {
+    hidden: { opacity: 0, x: 60 },
+    visible: { opacity: 1, x: 0 }
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15
+      }
+    }
+  };
+
   return (
     <div className="salon-website">
       {/* Navigation */}
-      <nav className="navbar">
+      <motion.nav 
+        className="navbar"
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <div className="nav-container">
           <div className="nav-content">
-            <div className="logo-section">
+            <motion.div 
+              className="logo-section"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
+            >
               <Sparkles className="logo-icon" />
               <div className="logo-text">
                 <h1>NAINA ARORA</h1>
                 <p>Makeup Artist & Hair Stylist</p>
               </div>
-            </div>
+            </motion.div>
             <div className="nav-links">
-              {['Home', 'Services', 'Gallery', 'Reviews', 'Contact'].map((item) => (
-                <button
+              {['Home', 'Services', 'Gallery', 'Reviews', 'Contact'].map((item, index) => (
+                <motion.button
                   key={item}
                   onClick={() => scrollToSection(item.toLowerCase())}
                   className={`nav-button ${activeSection === item.toLowerCase() ? 'active' : ''}`}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   {item}
-                </button>
+                </motion.button>
               ))}
             </div>
-            <button className="book-now-btn" onClick={() => scrollToSection('contact')}>
+            <motion.button 
+              className="book-now-btn" 
+              onClick={() => scrollToSection('contact')}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
               Book Now
-            </button>
+            </motion.button>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* Hero Section */}
       <section id="home" className="hero-section">
         <div className="hero-container">
           <div className="hero-grid">
-            <div className="hero-content">
-              <div className="verified-badge">
+            <motion.div 
+              className="hero-content"
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
+            >
+              <motion.div 
+                className="verified-badge"
+                variants={fadeIn}
+                transition={{ duration: 0.5 }}
+              >
                 <Award className="badge-icon" />
                 <span>Verified Artist • JAI GURU JI</span>
-              </div>
-              <h1 className="hero-title">
+              </motion.div>
+              <motion.h1 
+                className="hero-title"
+                variants={fadeInUp}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
                 Transform Your
                 <span className="gradient-text"> Special Moments</span>
-              </h1>
-              <p className="hero-description">
+              </motion.h1>
+              <motion.p 
+                className="hero-description"
+                variants={fadeInUp}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
                 Expert bridal & party makeup with 1,867+ stunning transformations. Located in Sector 3, Faridabad.
-              </p>
-              <div className="hero-buttons">
-                <button className="primary-btn" onClick={() => scrollToSection('contact')}>
+              </motion.p>
+              <motion.div 
+                className="hero-buttons"
+                variants={fadeInUp}
+                transition={{ duration: 0.6, delay: 0.4 }}
+              >
+                <motion.button 
+                  className="primary-btn" 
+                  onClick={() => scrollToSection('contact')}
+                  whileHover={{ scale: 1.05, boxShadow: "0 10px 30px rgba(0,0,0,0.2)" }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   <Calendar className="btn-icon" />
                   <span>Book Appointment</span>
-                </button>
-                <a
+                </motion.button>
+                <motion.a
                   href="https://www.instagram.com/nainaartistrymakeover/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="secondary-btn"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <Instagram className="btn-icon" />
                   <span>View Portfolio</span>
-                </a>
-              </div>
-              <div className="hero-stats">
-                <div className="stat-item">
-                  <p className="stat-number">70.8K+</p>
-                  <p className="stat-label">Instagram Followers</p>
-                </div>
-                <div className="stat-item">
-                  <p className="stat-number">1,867</p>
-                  <p className="stat-label">Happy Clients</p>
-                </div>
-                <div className="stat-item">
-                  <p className="stat-number">5.0</p>
-                  <p className="stat-label">Star Rating</p>
-                </div>
-              </div>
-            </div>
-            <div className="hero-image-wrapper">
+                </motion.a>
+              </motion.div>
+              <motion.div 
+                className="hero-stats"
+                variants={staggerContainer}
+                initial="hidden"
+                animate="visible"
+              >
+                {[
+                  { number: "70.8K+", label: "Instagram Followers" },
+                  { number: "1,867", label: "Happy Clients" },
+                  { number: "5.0", label: "Star Rating" }
+                ].map((stat, index) => (
+                  <motion.div 
+                    key={index}
+                    className="stat-item"
+                    variants={scaleIn}
+                    transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
+                  >
+                    <p className="stat-number">{stat.number}</p>
+                    <p className="stat-label">{stat.label}</p>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </motion.div>
+            <motion.div 
+              className="hero-image-wrapper"
+              initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
               <div className="hero-image-bg"></div>
-              <img
+              <motion.img
                 src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=800&h=1000&fit=crop"
                 alt="Bridal Makeup"
                 className="hero-image"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
               />
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -200,19 +301,41 @@ export default function NainaSalonWebsite() {
       {/* Services Section */}
       <section id="services" className="services-section">
         <div className="section-container">
-          <div className="section-header">
+          <motion.div 
+            className="section-header"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeInUp}
+            transition={{ duration: 0.6 }}
+          >
             <h2 className="section-title">Our Services</h2>
             <p className="section-subtitle">Professional makeup & styling for every occasion</p>
-          </div>
-          <div className="services-grid">
-            {services.map((service) => (
-              <div
+          </motion.div>
+          <motion.div 
+            className="services-grid"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainer}
+          >
+            {services.map((service, index) => (
+              <motion.div
                 key={service.id}
                 className="service-card"
                 onClick={() => setSelectedService(service)}
+                variants={fadeInUp}
+                transition={{ duration: 0.5 }}
+                whileHover={{ y: -10, boxShadow: "0 20px 40px rgba(0,0,0,0.15)" }}
               >
                 <div className="service-image-wrapper">
-                  <img src={service.image} alt={service.name} className="service-image" />
+                  <motion.img 
+                    src={service.image} 
+                    alt={service.name} 
+                    className="service-image"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.4 }}
+                  />
                   <div className="service-overlay">
                     <h3 className="service-name">{service.name}</h3>
                     <p className="service-duration">{service.duration}</p>
@@ -222,94 +345,211 @@ export default function NainaSalonWebsite() {
                   <p className="service-description">{service.description}</p>
                   <div className="service-footer">
                     <span className="service-price">{service.price}</span>
-                    <ChevronRight className="service-arrow" />
+                    <motion.div
+                      whileHover={{ x: 5 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <ChevronRight className="service-arrow" />
+                    </motion.div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Packages Section */}
       <section id="packages" className="packages-section">
         <div className="section-container">
-          <div className="section-header">
+          <motion.div 
+            className="section-header"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeInUp}
+            transition={{ duration: 0.6 }}
+          >
             <h2 className="section-title">Special Packages</h2>
             <p className="section-subtitle">Complete beauty solutions at great value</p>
-          </div>
-          <div className="packages-grid">
+          </motion.div>
+          <motion.div 
+            className="packages-grid"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainer}
+          >
             {packages.map((pkg, idx) => (
-              <div
+              <motion.div
                 key={idx}
                 className={`package-card ${pkg.popular ? 'popular' : ''}`}
+                variants={scaleIn}
+                transition={{ duration: 0.5 }}
+                whileHover={{ 
+                  y: -10, 
+                  scale: 1.02,
+                  boxShadow: "0 20px 40px rgba(0,0,0,0.15)" 
+                }}
               >
-                {pkg.popular && <div className="package-badge">MOST POPULAR</div>}
+                {pkg.popular && (
+                  <motion.div 
+                    className="package-badge"
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                  >
+                    MOST POPULAR
+                  </motion.div>
+                )}
                 <h3 className="package-name">{pkg.name}</h3>
                 <p className="package-price">{pkg.price}</p>
                 <ul className="package-features">
                   {pkg.features.map((feature, i) => (
-                    <li key={i} className="package-feature">
+                    <motion.li 
+                      key={i} 
+                      className="package-feature"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.3, delay: i * 0.1 }}
+                    >
                       <Star className="feature-icon" />
                       <span>{feature}</span>
-                    </li>
+                    </motion.li>
                   ))}
                 </ul>
-                <button className="package-btn" onClick={() => scrollToSection('contact')}>
+                <motion.button 
+                  className="package-btn" 
+                  onClick={() => scrollToSection('contact')}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   Select Package
-                </button>
-              </div>
+                </motion.button>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
-
 
       {/* Gallery Section */}
       <section id="gallery" className="gallery-section">
         <div className="section-container">
-          <div className="section-header">
+          <motion.div 
+            className="section-header"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeInUp}
+            transition={{ duration: 0.6 }}
+          >
             <h2 className="section-title">Transformation Gallery</h2>
             <p className="section-subtitle">See the magic happen</p>
-          </div>
-          <div className="gallery-grid">
+          </motion.div>
+          <motion.div 
+            className="gallery-grid"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainer}
+          >
             {beforeAfter.map((item, idx) => (
-              <div key={idx} className="gallery-item">
+              <motion.div 
+                key={idx} 
+                className="gallery-item"
+                variants={fadeInUp}
+                transition={{ duration: 0.5 }}
+                whileHover={{ scale: 1.02 }}
+              >
                 <div className="comparison-container">
-                  <div className="comparison-side">
+                  <motion.div 
+                    className="comparison-side"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                  >
                     <img src={item.before} alt="Before" className="comparison-image" />
                     <div className="comparison-label">Before</div>
-                  </div>
-                  <div className="comparison-side">
+                  </motion.div>
+                  <motion.div 
+                    className="comparison-side"
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                  >
                     <img src={item.after} alt="After" className="comparison-image" />
                     <div className="comparison-label">After</div>
-                  </div>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Reviews Section */}
       <section id="reviews" className="reviews-section">
         <div className="section-container">
-          <div className="section-header">
+          <motion.div 
+            className="section-header"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeInUp}
+            transition={{ duration: 0.6 }}
+          >
             <h2 className="section-title">Client Reviews</h2>
-            <div className="rating-display">
+            <motion.div 
+              className="rating-display"
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="star-icon" />
+                <motion.div
+                  key={i}
+                  initial={{ rotate: -180, opacity: 0 }}
+                  whileInView={{ rotate: 0, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: 0.3 + i * 0.1 }}
+                >
+                  <Star className="star-icon" />
+                </motion.div>
               ))}
               <span className="rating-number">5.0</span>
-            </div>
+            </motion.div>
             <p className="section-subtitle">Based on 200+ Google Reviews</p>
-          </div>
-          <div className="reviews-grid">
+          </motion.div>
+          <motion.div 
+            className="reviews-grid"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainer}
+          >
             {reviews.map((review, idx) => (
-              <div key={idx} className="review-card">
+              <motion.div 
+                key={idx} 
+                className="review-card"
+                variants={scaleIn}
+                transition={{ duration: 0.5 }}
+                whileHover={{ y: -5, boxShadow: "0 10px 30px rgba(0,0,0,0.1)" }}
+              >
                 <div className="review-stars">
                   {[...Array(review.rating)].map((_, i) => (
-                    <Star key={i} className="review-star" />
+                    <motion.div
+                      key={i}
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.2, delay: i * 0.05 }}
+                    >
+                      <Star className="review-star" />
+                    </motion.div>
                   ))}
                 </div>
                 <p className="review-text">"{review.text}"</p>
@@ -317,9 +557,9 @@ export default function NainaSalonWebsite() {
                   <p className="review-author">{review.name}</p>
                   <p className="review-date">{review.date}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -327,133 +567,183 @@ export default function NainaSalonWebsite() {
       <section id="contact" className="contact-section">
         <div className="section-container">
           <div className="contact-grid">
-            <div className="contact-info">
+            <motion.div 
+              className="contact-info"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={slideInLeft}
+              transition={{ duration: 0.6 }}
+            >
               <h2>Get In Touch</h2>
               <p className="contact-subtitle">
                 Book your appointment today and let's create your perfect look!
               </p>
-              <div className="contact-details">
-                <div className="contact-item">
-                  <MapPin className="contact-icon" />
-                  <span>2211 Sector 3, Near Tagore Academy, Faridabad 121004</span>
-                </div>
-                <div className="contact-item">
-                  <Phone className="contact-icon" />
-                  <span>+91 87507 86726</span>
-                </div>
-                <div className="contact-item">
-                  <Mail className="contact-icon" />
-                  <span>neweee.arora1@gmail.com</span>
-                </div>
-                <div className="contact-item">
-                  <Clock className="contact-icon" />
-                  <span>Mon-Sun: 10:00 AM - 8:00 PM</span>
-                </div>
-                <div className="contact-item">
-                  <Instagram className="contact-icon" />
-                  <span>@nainaartistrymakeover (70.8K followers)</span>
-                </div>
-              </div>
-            </div>
-            <div className="contact-form-wrapper">
+              <motion.div 
+                className="contact-details"
+                variants={staggerContainer}
+              >
+                {[
+                  { icon: MapPin, text: "2211 Sector 3, Near Tagore Academy, Faridabad 121004" },
+                  { icon: Phone, text: "+91 87507 86726" },
+                  { icon: Mail, text: "neweee.arora1@gmail.com" },
+                  { icon: Clock, text: "Mon-Sun: 10:00 AM - 8:00 PM" },
+                  { icon: Instagram, text: "@nainaartistrymakeover (70.8K followers)" }
+                ].map((item, index) => (
+                  <motion.div 
+                    key={index}
+                    className="contact-item"
+                    variants={fadeInUp}
+                    transition={{ duration: 0.4 }}
+                    whileHover={{ x: 10 }}
+                  >
+                    <item.icon className="contact-icon" />
+                    <span>{item.text}</span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </motion.div>
+            <motion.div 
+              className="contact-form-wrapper"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={slideInRight}
+              transition={{ duration: 0.6 }}
+            >
               <h3 className="form-title">Book Your Appointment</h3>
               <form className="booking-form" onSubmit={handleSubmit}>
-                <input
-                  type="text"
-                  name="name"
-                  value={bookingData.name}
-                  onChange={handleInputChange}
-                  placeholder="Your Name"
-                  className="form-input"
-                />
-                <input
-                  type="tel"
-                  name="phone"
-                  value={bookingData.phone}
-                  onChange={handleInputChange}
-                  placeholder="Phone Number"
-                  className="form-input"
-                />
-                <input
-                  type="email"
-                  name="email"
-                  value={bookingData.email}
-                  onChange={handleInputChange}
-                  placeholder="Email Address"
-                  className="form-input"
-                />
-                <select
+                {[
+                  { type: "text", name: "name", placeholder: "Your Name" },
+                  { type: "tel", name: "phone", placeholder: "Phone Number" },
+                  { type: "email", name: "email", placeholder: "Email Address" }
+                ].map((field, index) => (
+                  <motion.input
+                    key={field.name}
+                    type={field.type}
+                    name={field.name}
+                    value={bookingData[field.name]}
+                    onChange={handleInputChange}
+                    placeholder={field.placeholder}
+                    className="form-input"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    whileFocus={{ scale: 1.02 }}
+                  />
+                ))}
+                <motion.select
                   name="service"
                   value={bookingData.service}
                   onChange={handleInputChange}
                   className="form-input"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: 0.3 }}
+                  whileFocus={{ scale: 1.02 }}
                 >
                   <option value="">Select Service</option>
                   <option value="bridal">Bridal Makeup</option>
                   <option value="party">Party Makeup</option>
                   <option value="prewedding">Pre-Wedding Shoot</option>
                   <option value="hair">Hair Styling</option>
-                </select>
-                <input
+                </motion.select>
+                <motion.input
                   type="date"
                   name="date"
                   value={bookingData.date}
                   onChange={handleInputChange}
                   className="form-input"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: 0.4 }}
+                  whileFocus={{ scale: 1.02 }}
                 />
-                <textarea
+                <motion.textarea
                   name="details"
                   value={bookingData.details}
                   onChange={handleInputChange}
                   placeholder="Additional Details"
                   rows={3}
                   className="form-input"
-                ></textarea>
-                <button type="submit" className="submit-btn">
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: 0.5 }}
+                  whileFocus={{ scale: 1.02 }}
+                ></motion.textarea>
+                <motion.button 
+                  type="submit" 
+                  className="submit-btn"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: 0.6 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   <Send className="btn-icon" />
                   <span>Submit Booking Request</span>
-                </button>
+                </motion.button>
               </form>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="footer">
+      <motion.footer 
+        className="footer"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
         <div className="footer-content">
-          <div className="footer-logo">
+          <motion.div 
+            className="footer-logo"
+            initial={{ scale: 0 }}
+            whileInView={{ scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
             <Sparkles className="footer-logo-icon" />
             <h3>NAINA ARORA</h3>
-          </div>
+          </motion.div>
           <p className="footer-subtitle">Professional Makeup Artist & Hair Stylist</p>
-          <div className="footer-social">
-                <a
-                  href="https://www.instagram.com/nainaartistrymakeover/"
-                  // target="_blank"
-                  // rel="noopener noreferrer"                  
-                >
-                <Instagram className="social-icon" />
-                </a>
-         
-          
-                {/* Clickable icons */}
-                <a href="tel:8750786726" className="contact-item">
-                  <Phone className="social-icon" />
-                  {/* <span>8750786726</span> */}
-                </a>
-                <a href="mailto:neweee.arora1@gmail.com" className="contact-item">
-                  <Mail className="social-icon" />
-                  {/* <span>neweee.arora1@gmail.com</span> */}
-                </a>
-                <a href="https://share.google/kv06UsyC2i6HjrenT" target="_blank" rel="noopener noreferrer" className="contact-item">
-                  <MapPin className="social-icon" />
-                  {/* <span>2211 Sector 3, Near Tagore Academy, Faridabad 121004</span> */}
-                </a>
-          </div>
+          <motion.div 
+            className="footer-social"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+          >
+            {[
+              { href: "https://www.instagram.com/nainaartistrymakeover/", icon: Instagram },
+              { href: "tel:8750786726", icon: Phone },
+              { href: "mailto:neweee.arora1@gmail.com", icon: Mail },
+              { href: "https://share.google/kv06UsyC2i6HjrenT", icon: MapPin }
+            ].map((item, index) => (
+              <motion.a
+                key={index}
+                href={item.href}
+                target={item.href.startsWith('http') ? "_blank" : undefined}
+                rel={item.href.startsWith('http') ? "noopener noreferrer" : undefined}
+                className="contact-item"
+                variants={scaleIn}
+                whileHover={{ scale: 1.2, rotate: 5 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <item.icon className="social-icon" />
+              </motion.a>
+            ))}
+          </motion.div>
           <p className="footer-copyright">© 2024 Naina Arora. All rights reserved.</p>
         </div>
-      </footer>
+      </motion.footer>
     </div>
   );
 }
