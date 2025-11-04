@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import "./App.css"; // <=== Import CSS file
 function App() {
   const [employee, setEmployee] = useState("");
   const [movateId, setMovateId] = useState("");
