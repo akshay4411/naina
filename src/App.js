@@ -1,37 +1,40 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import NainaSalonWebsite from "./naina";
+import React, { useState } from "react";
 
+export default function AttendanceForm() {
+  const [employee, setEmployee] = useState("");
+  const [date, setDate] = useState("");
 
-// ✅ Admin route protection wrapper
-const AdminRoute = ({ element }) => {
-  const role = localStorage.getItem("role");
-  return role === "admin" ? element : <Navigate to="/login" replace />;
-};
+  const submitAttendance = async () => {
+    const res = await fetch("PASTE_YOUR_WEB_APP_URL_HERE", {
+      method: "POST",
+      body: JSON.stringify({
+        employee: employee,
+        attendance_date: date
+      }),
+    });
 
-// ✅ Wrapper to handle Navbar visibility
-const AppContent = () => {
-  const location = useLocation();
-  const hideNavbar = location.pathname === "/login"; // hide only on login
+    const data = await res.json();
+    alert(data.message);
+  };
 
   return (
-    <>
-      {/* {!hideNavbar && <Navbar />} 👈 hide Navbar on /login */}
-      <Routes>
-        <Route path="/" element={<NainaSalonWebsite />} />
-       
+    <div style={{ padding: 40 }}>
+      <h2>Employee Attendance</h2>
 
-      </Routes>
-    </>
-  );
-};
+      <input
+        type="text"
+        placeholder="Employee Name"
+        value={employee}
+        onChange={(e) => setEmployee(e.target.value)}
+      /><br/><br/>
 
-function App() {
-  return (
-    <Router>
-      <AppContent />
-    </Router>
+      <input
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+      /><br/><br/>
+
+      <button onClick={submitAttendance}>Submit Attendance</button>
+    </div>
   );
 }
-
-export default App;
