@@ -2,15 +2,17 @@ import React, { useState } from "react";
 
 function App() {
   const [employee, setEmployee] = useState("");
+  const [movateId, setMovateId] = useState("");
+  const [nokiaId, setNokiaId] = useState("");
+  const [shift, setShift] = useState("");
   const [date, setDate] = useState("");
 
   const submitAttendance = async () => {
-    if (!employee || !date) {
-      alert("Please enter name & date");
+    if (!employee || !movateId || !nokiaId || !shift || !date) {
+      alert("Please fill all fields");
       return;
     }
 
-    // 3 day validation
     const selectedDate = new Date(date);
     const today = new Date();
     today.setHours(0,0,0,0);
@@ -21,91 +23,49 @@ function App() {
       return;
     }
 
-    const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbxqrUvgWoARkAkbdDZufAVMpRN2oCoRcgtk39ukui-JumifXD2B33bZY08QwzALTnJ7/exec",
-      {
-        method: "POST",
-        body: JSON.stringify({ employee, date }),
-      }
-    );
+    const res = await fetch("https://script.google.com/macros/s/AKfycbxqrUvgWoARkAkbdDZufAVMpRN2oCoRcgtk39ukui-JumifXD2B33bZY08QwzALTnJ7/exec", {
+      method: "POST",
+      body: JSON.stringify({ employee, movateId, nokiaId, shift, date }),
+    });
 
     const data = await res.json();
-    alert("✅ Attendance saved successfully!");
+    alert("✅ Attendance saved!");
 
     setEmployee("");
+    setMovateId("");
+    setNokiaId("");
+    setShift("");
     setDate("");
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <h2 style={styles.title}>Employee Attendance</h2>
+    <div style={{ padding: 40 }}>
+      <h2>Daily Attendance</h2>
 
-        <input
-          style={styles.input}
-          type="text"
-          placeholder="Employee Name"
-          value={employee}
-          onChange={(e) => setEmployee(e.target.value)}
-        />
+      <input placeholder="Employee Name" value={employee} onChange={(e)=>setEmployee(e.target.value)} /><br/><br/>
 
-        <input
-          style={styles.input}
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
+      <input placeholder="Movate Employee ID" value={movateId} onChange={(e)=>setMovateId(e.target.value)} /><br/><br/>
 
-        <button style={styles.button} onClick={submitAttendance}>
-          Submit Attendance
-        </button>
-      </div>
+      <input placeholder="Nokia Employee ID" value={nokiaId} onChange={(e)=>setNokiaId(e.target.value)} /><br/><br/>
+
+      <select value={shift} onChange={(e)=>setShift(e.target.value)}>
+        <option value="">Select Shift</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="F">F</option>
+        <option value="G">G</option>
+        <option value="COB">COB</option>
+        <option value="L">L</option>
+        <option value="OFF">OFF</option>
+        <option value="H">H</option>
+      </select><br/><br/>
+
+      <input type="date" value={date} onChange={(e)=>setDate(e.target.value)} /><br/><br/>
+
+      <button onClick={submitAttendance}>Submit Attendance</button>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    background: "#f6f7fb",
-    width: "100vw",
-    height: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  card: {
-    background: "#fff",
-    width: 350,
-    padding: 30,
-    borderRadius: 12,
-    boxShadow: "0 5px 25px rgba(0,0,0,0.1)",
-    textAlign: "center",
-  },
-  title: {
-    marginBottom: 25,
-    fontSize: 24,
-    fontWeight: 700,
-    color: "#333",
-  },
-  input: {
-    width: "100%",
-    padding: 12,
-    marginBottom: 15,
-    border: "1px solid #ddd",
-    borderRadius: 8,
-    fontSize: 15,
-  },
-  button: {
-    width: "100%",
-    padding: 12,
-    background: "#4a6cf7",
-    border: "none",
-    borderRadius: 8,
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: 600,
-    cursor: "pointer",
-  },
-};
 
 export default App;
