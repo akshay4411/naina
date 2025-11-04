@@ -5,23 +5,18 @@ export default function AttendanceForm() {
   const [date, setDate] = useState("");
 
   const submitAttendance = async () => {
-    if (!employee || !date) {
-      alert("Please enter name & date");
-      return;
-    }
-
+    // 3 day validation here in REACT
     const selectedDate = new Date(date);
     const today = new Date();
     today.setHours(0,0,0,0);
 
     const diffDays = (today - selectedDate) / (1000 * 60 * 60 * 24);
-
     if (diffDays > 3) {
-      alert("You cannot submit attendance older than 3 days!");
+      alert("You cannot mark attendance older than 3 days!");
       return;
     }
 
-    const res = await fetch("PASTE_WEB_APP_URL_HERE", {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbwZDdxKTV3NIzowmitohhZjeP7HgmUrinABezjnBp4dM0GlQPaorPUcr4g0OW_n_n-E/exec", {
       method: "POST",
       body: JSON.stringify({
         employee: employee,
