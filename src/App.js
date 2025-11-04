@@ -12,7 +12,7 @@ function App() {
 
   const [employee, setEmployee] = useState("");
 
-  const URL = "PASTE_YOUR_NEW_DEPLOY_SCRIPT_URL_HERE"; // <--- IMPORTANT
+  const URL = "https://script.google.com/macros/s/AKfycbwRcFPnYQ0-wv0fSbEwYYxZPL6PKbvFsh0qVAJW0WTLGPlhevQ07qdnybfWygQ23Mjb/exec"; // <--- IMPORTANT
 
   const handleLogin = async () => {
     const res = await fetch(URL, {
@@ -38,9 +38,9 @@ function App() {
   const submitAttendance = async () => {
     const selectedDate = new Date(date);
     const today = new Date();
-    today.setHours(0,0,0,0);
+    today.setHours(0, 0, 0, 0);
 
-    const diff = (today - selectedDate) / (1000*60*60*24);
+    const diff = (today - selectedDate) / (1000 * 60 * 60 * 24);
     if (diff > 3) {
       alert("Attendance cannot be older than 3 days!");
       return;
@@ -49,7 +49,7 @@ function App() {
     const res = await fetch(URL, {
       method: "POST",
       body: JSON.stringify({
-        type:"mark",
+        type: "mark",
         employee,
         movateId: movate_id,
         nokiaId,
@@ -67,8 +67,8 @@ function App() {
         {!loggedIn ? (
           <>
             <h2>Login</h2>
-            <input className="input-field" placeholder="Movate ID" value={movate_id} onChange={(e)=>setMovateId(e.target.value)} />
-            <input className="input-field" placeholder="Password" type="password" value={password} onChange={(e)=>setPassword(e.target.value)} />
+            <input className="input-field" placeholder="Movate ID" value={movate_id} onChange={(e) => setMovateId(e.target.value)} />
+            <input className="input-field" placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
             <button className="btn" onClick={handleLogin}>Login</button>
           </>
         ) : (
@@ -77,9 +77,9 @@ function App() {
 
             <input className="input-field" value={movate_id} readOnly />
 
-            <input className="input-field" placeholder="Nokia Employee ID" value={nokiaId} onChange={(e)=>setNokiaId(e.target.value)} />
+            <input className="input-field" placeholder="Nokia Employee ID" value={nokiaId} onChange={(e) => setNokiaId(e.target.value)} />
 
-            <select className="select-field" value={shift} onChange={(e)=>setShift(e.target.value)}>
+            <select className="select-field" value={shift} onChange={(e) => setShift(e.target.value)}>
               <option value="">Select Shift</option>
               <option value="A">A</option>
               <option value="B">B</option>
@@ -92,7 +92,7 @@ function App() {
               <option value="H">H</option>
             </select>
 
-            <input className="input-field" type="date" value={date} onChange={(e)=>setDate(e.target.value)} />
+            <input className="input-field" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
 
             <button className="btn" onClick={submitAttendance}>Submit Attendance</button>
           </>
