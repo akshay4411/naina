@@ -23,7 +23,7 @@ function App() {
       return;
     }
 
-    const res = await fetch("https://script.google.com/macros/s/AKfycbxqrUvgWoARkAkbdDZufAVMpRN2oCoRcgtk39ukui-JumifXD2B33bZY08QwzALTnJ7/exec", {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbwvrC03rryAf5Wp_8KIJQos3SYsk8qUNCb2hrlwT_bBemeaKp1YgURCC6WCDssZItHJ/exec", {
       method: "POST",
       body: JSON.stringify({ employee, movateId, nokiaId, shift, date }),
     });
