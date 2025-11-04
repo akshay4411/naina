@@ -5,11 +5,27 @@ export default function AttendanceForm() {
   const [date, setDate] = useState("");
 
   const submitAttendance = async () => {
-    const res = await fetch("PASTE_YOUR_WEB_APP_URL_HERE", {
+    if (!employee || !date) {
+      alert("Please enter name & date");
+      return;
+    }
+
+    const selectedDate = new Date(date);
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    const diffDays = (today - selectedDate) / (1000 * 60 * 60 * 24);
+
+    if (diffDays > 3) {
+      alert("You cannot submit attendance older than 3 days!");
+      return;
+    }
+
+    const res = await fetch("PASTE_WEB_APP_URL_HERE", {
       method: "POST",
       body: JSON.stringify({
         employee: employee,
-        attendance_date: date
+        date: date
       }),
     });
 
