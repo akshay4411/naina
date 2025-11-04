@@ -22,7 +22,7 @@ function App() {
     }
 
     const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbwZDdxKTV3NIzowmitohhZjeP7HgmUrinABezjnBp4dM0GlQPaorPUcr4g0OW_n_n-E/exec",
+      "https://script.google.com/macros/s/AKfycbxqrUvgWoARkAkbdDZufAVMpRN2oCoRcgtk39ukui-JumifXD2B33bZY08QwzALTnJ7/exec",
       {
         method: "POST",
         body: JSON.stringify({ employee, date }),
