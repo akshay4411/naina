@@ -12,7 +12,7 @@ function App() {
 
   const [employee, setEmployee] = useState("");
 
-  const URL = "https://script.google.com/macros/s/AKfycbz5pdR87qzPXIintGuK7lxaLhTB-d-WT4PjLQvHqrpHO29aKuuFk4guLgl9H1o2-hiB/exec"; // <--- IMPORTANT
+  const URL = "https://script.google.com/macros/s/AKfycbxYgjVVBi8MLHlTPmkQHsTZlfqRMyODsaxt4gSzw588jgJhUJBdhjn5RAp_8LMejYS-/exec"; // <--- IMPORTANT
 
   const handleLogin = async () => {
     const res = await fetch(URL, {
