@@ -8,11 +8,14 @@ function App() {
 
   const [nokiaId, setNokiaId] = useState("");
   const [shift, setShift] = useState("");
-  const [date, setDate] = useState("");
+
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
 
   const [employee, setEmployee] = useState("");
 
-  const URL = "https://script.google.com/macros/s/AKfycbxYgjVVBi8MLHlTPmkQHsTZlfqRMyODsaxt4gSzw588jgJhUJBdhjn5RAp_8LMejYS-/exec"; // <--- IMPORTANT
+  const URL =
+    "https://script.google.com/macros/s/AKfycbxYgjVVBi8MLHlTPmkQHsTZlfqRMyODsaxt4gSzw588jgJhUJBdhjn5RAp_8LMejYS-/exec";
 
   const handleLogin = async () => {
     const res = await fetch(URL, {
@@ -20,7 +23,7 @@ function App() {
       body: JSON.stringify({
         type: "login",
         movate_id,
-        password
+        password,
       }),
     });
 
@@ -36,28 +39,42 @@ function App() {
   };
 
   const submitAttendance = async () => {
-    const selectedDate = new Date(date);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const diff = (today - selectedDate) / (1000 * 60 * 60 * 24);
-    if (diff > 3) {
-      alert("Attendance cannot be older than 3 days!");
+    if (!fromDate || !toDate) {
+      alert("Select both From and To dates");
       return;
     }
 
-    const res = await fetch(URL, {
-      method: "POST",
-      body: JSON.stringify({
-        type: "mark",
-        employee,
-        movateId: movate_id,
-        nokiaId,
-        shift,
-        date
-      })
-    });
-    const data = await res.json();
+    const start = new Date(fromDate);
+    const end = new Date(toDate);
+
+    const diff = (end - start) / (1000 * 60 * 60 * 24);
+
+    if (diff < 0) {
+      alert("To date must be greater than From date!");
+      return;
+    }
+
+    if (diff > 5) {
+      alert("Max 5 days allowed!");
+      return;
+    }
+
+    for (let d = start; d <= end; d.setDate(d.getDate() + 1)) {
+      const formatted = d.toISOString().split("T")[0];
+
+      await fetch(URL, {
+        method: "POST",
+        body: JSON.stringify({
+          type: "mark",
+          employee,
+          movateId: movate_id,
+          nokiaId,
+          shift,
+          date: formatted,
+        }),
+      });
+    }
+
     alert("Attendance saved ✅");
   };
 
@@ -67,9 +84,22 @@ function App() {
         {!loggedIn ? (
           <>
             <h2>Login</h2>
-            <input className="input-field" placeholder="Movate ID" value={movate_id} onChange={(e) => setMovateId(e.target.value)} />
-            <input className="input-field" placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <button className="btn" onClick={handleLogin}>Login</button>
+            <input
+              className="input-field"
+              placeholder="Movate ID"
+              value={movate_id}
+              onChange={(e) => setMovateId(e.target.value)}
+            />
+            <input
+              className="input-field"
+              placeholder="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button className="btn" onClick={handleLogin}>
+              Login
+            </button>
           </>
         ) : (
           <>
@@ -77,9 +107,18 @@ function App() {
 
             <input className="input-field" value={movate_id} readOnly />
 
-            <input className="input-field" placeholder="Nokia Employee ID" value={nokiaId} onChange={(e) => setNokiaId(e.target.value)} />
+            <input
+              className="input-field"
+              placeholder="Nokia Employee ID"
+              value={nokiaId}
+              onChange={(e) => setNokiaId(e.target.value)}
+            />
 
-            <select className="select-field" value={shift} onChange={(e) => setShift(e.target.value)}>
+            <select
+              className="select-field"
+              value={shift}
+              onChange={(e) => setShift(e.target.value)}
+            >
               <option value="">Select Shift</option>
               <option value="A">A</option>
               <option value="B">B</option>
@@ -92,9 +131,32 @@ function App() {
               <option value="H">H</option>
             </select>
 
-            <input className="input-field" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+            {/* special message if user selects Leave */}
+            {(shift === "L" || shift === "OFF") && (
+              <p style={{ color: "red" }}>
+                ⚠ Don't forget to mark attendance on GAMS Portal
+              </p>
+            )}
 
-            <button className="btn" onClick={submitAttendance}>Submit Attendance</button>
+            <input
+              className="input-field"
+              type="date"
+              value={fromDate}
+              onChange={(e) => setFromDate(e.target.value)}
+              placeholder="From Date"
+            />
+
+            <input
+              className="input-field"
+              type="date"
+              value={toDate}
+              onChange={(e) => setToDate(e.target.value)}
+              placeholder="To Date"
+            />
+
+            <button className="btn" onClick={submitAttendance}>
+              Submit Attendance
+            </button>
           </>
         )}
       </div>
