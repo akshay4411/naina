@@ -15,7 +15,7 @@ function App() {
   const [employee, setEmployee] = useState("");
 
   const URL =
-    "https://script.google.com/macros/s/AKfycbxYgjVVBi8MLHlTPmkQHsTZlfqRMyODsaxt4gSzw588jgJhUJBdhjn5RAp_8LMejYS-/exec";
+    "https://script.google.com/macros/s/AKfycbxUnjEwkt5w7EH7EbhWG82sFZEa0-Hy6wmUzNLCLZzIafJAmd0aKf9wRe1ITjs2lcEP/exec";
 
   const handleLogin = async () => {
     const res = await fetch(URL, {
