@@ -17,6 +17,7 @@ function App() {
   const URL =
     "https://script.google.com/macros/s/AKfycbxUnjEwkt5w7EH7EbhWG82sFZEa0-Hy6wmUzNLCLZzIafJAmd0aKf9wRe1ITjs2lcEP/exec";
 
+  // ---------------- LOGIN ----------------
   const handleLogin = async () => {
     const res = await fetch(URL, {
       method: "POST",
@@ -30,7 +31,7 @@ function App() {
     const data = await res.json();
 
     if (data.status) {
-      const extractedName = password.split("$")[0]; // get name before $
+      const extractedName = password.split("$")[0]; // Get employee name
       setEmployee(extractedName);
       setLoggedIn(true);
     } else {
@@ -38,14 +39,17 @@ function App() {
     }
   };
 
+  // ---------------- ATTENDANCE SUBMIT ----------------
   const submitAttendance = async () => {
-    if (!fromDate || !toDate) {
-      alert("Select both From and To dates");
+    // Validate all fields
+    if (!movate_id || !nokiaId || !shift || !fromDate || !toDate) {
+      alert("Please fill all fields before submitting!");
       return;
     }
 
-    const start = new Date(fromDate);
-    const end = new Date(toDate);
+    // Create date objects without timezone issues
+    const start = new Date(`${fromDate}T00:00`);
+    const end = new Date(`${toDate}T00:00`);
 
     const diff = (end - start) / (1000 * 60 * 60 * 24);
 
@@ -59,7 +63,8 @@ function App() {
       return;
     }
 
-    for (let d = start; d <= end; d.setDate(d.getDate() + 1)) {
+    // Loop through date range
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
       const formatted = d.toISOString().split("T")[0];
 
       await fetch(URL, {
@@ -78,18 +83,26 @@ function App() {
     alert("Attendance saved ✅");
   };
 
+  // Disable button unless form valid
+  const isFormValid =
+    movate_id && nokiaId && shift && fromDate && toDate;
+
   return (
     <div className="container">
       <div className="card">
+
+        {/* ---------------- LOGIN SCREEN ---------------- */}
         {!loggedIn ? (
           <>
             <h2>Login</h2>
+
             <input
               className="input-field"
               placeholder="Movate ID"
               value={movate_id}
               onChange={(e) => setMovateId(e.target.value)}
             />
+
             <input
               className="input-field"
               placeholder="Password"
@@ -97,11 +110,13 @@ function App() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+
             <button className="btn" onClick={handleLogin}>
               Login
             </button>
           </>
         ) : (
+        /* ---------------- ATTENDANCE FORM ---------------- */
           <>
             <h2>Daily Attendance</h2>
 
@@ -131,19 +146,18 @@ function App() {
               <option value="H">H</option>
             </select>
 
-            {/* special message if user selects Leave */}
             {(shift === "L" || shift === "OFF") && (
               <p style={{ color: "red" }}>
                 ⚠ Don't forget to mark attendance on GAMS Portal
               </p>
             )}
 
+            {/* DATE ONLY - No time */}
             <input
               className="input-field"
               type="date"
               value={fromDate}
               onChange={(e) => setFromDate(e.target.value)}
-              placeholder="From Date"
             />
 
             <input
@@ -151,10 +165,14 @@ function App() {
               type="date"
               value={toDate}
               onChange={(e) => setToDate(e.target.value)}
-              placeholder="To Date"
             />
 
-            <button className="btn" onClick={submitAttendance}>
+            <button
+              className="btn"
+              onClick={submitAttendance}
+              disabled={!isFormValid}
+              style={{ opacity: isFormValid ? 1 : 0.5 }}
+            >
               Submit Attendance
             </button>
           </>
