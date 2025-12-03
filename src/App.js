@@ -31,7 +31,7 @@ function App() {
     const data = await res.json();
 
     if (data.status) {
-      const extractedName = password.split("$")[0]; // Get employee name
+      const extractedName = password.split("$")[0];
       setEmployee(extractedName);
       setLoggedIn(true);
     } else {
@@ -65,7 +65,13 @@ function App() {
 
     // Loop through date range
     for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-      const formatted = d.toISOString().split("T")[0];
+      // --- FORMAT DATE AS DD-MM-YYYY (NO TIME) ---
+      const formatted =
+        String(d.getDate()).padStart(2, "0") +
+        "-" +
+        String(d.getMonth() + 1).padStart(2, "0") +
+        "-" +
+        d.getFullYear();
 
       await fetch(URL, {
         method: "POST",
@@ -75,7 +81,7 @@ function App() {
           movateId: movate_id,
           nokiaId,
           shift,
-          date: formatted,
+          date: formatted, // <<< SENDING DATE WITHOUT TIME
         }),
       });
     }
@@ -152,7 +158,7 @@ function App() {
               </p>
             )}
 
-            {/* DATE ONLY - No time */}
+            {/* DATE ONLY */}
             <input
               className="input-field"
               type="date"
