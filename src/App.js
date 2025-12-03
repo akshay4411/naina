@@ -152,7 +152,7 @@ function App() {
               <option value="H">H</option>
             </select>
 
-            {(shift === "L" || shift === "OFF") && (
+            {(shift === "L") && (
               <p style={{ color: "red" }}>
                 ⚠ Don't forget to mark attendance on GAMS Portal
               </p>
