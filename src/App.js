@@ -561,24 +561,35 @@ for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
 // HISTORY PAGE (TABLE WITH FILTERS)
 // =====================================================
 const HistoryPage = () => {
+
   const { attendanceData } = useContext(AuthContext);
+
   const [filterShift, setFilterShift] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
-  const [fromDate, setFromDate] = useState('');
-  const [toDate, setToDate] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: 'date', direction: 'desc' });
 
- 
-
+  // ✅ SAFE DEFAULT
   const records = attendanceData?.records || [];
 
-
+  //------------------------------------------------
+  // DATE PARSER
+  //------------------------------------------------
   const parseDate = (dateStr) => {
-    const [day, month, year] = dateStr.split('-');
-    return new Date(`${year}-${month}-${day}`);
+
+    if (!dateStr) return new Date(0);
+
+    // Handles ISO and dd-mm-yyyy
+    if (dateStr.includes("T")) return new Date(dateStr);
+
+    const [d, m, y] = dateStr.split("-");
+    return new Date(`${y}-${m}-${d}`);
   };
 
+  //------------------------------------------------
+  // MEMO FILTER
+  //------------------------------------------------
   const filteredRecords = useMemo(() => {
+
     let filtered = [...records];
 
     if (filterShift) {
@@ -587,34 +598,25 @@ const HistoryPage = () => {
 
     if (filterStatus) {
       filtered = filtered.filter(r => {
-        if (filterStatus === 'Present') return !['L', 'OFF', 'H'].includes(r.shift);
+
+        if (filterStatus === 'Present') return !['L','OFF','H'].includes(r.shift);
         if (filterStatus === 'Leave') return r.shift === 'L';
         if (filterStatus === 'Off') return r.shift === 'OFF';
         if (filterStatus === 'Holiday') return r.shift === 'H';
+
         return true;
       });
     }
 
-    if (fromDate) {
-      const from = new Date(fromDate);
-      filtered = filtered.filter(r => parseDate(r.date) >= from);
-    }
-    
-    if (toDate) {
-      const to = new Date(toDate);
-      filtered = filtered.filter(r => parseDate(r.date) <= to);
-    }
+    filtered.sort((a,b)=>{
 
-    filtered.sort((a, b) => {
-      let aVal, bVal;
-      
-      if (sortConfig.key === 'date') {
-        aVal = parseDate(a.date);
-        bVal = parseDate(b.date);
-      } else {
-        aVal = a[sortConfig.key];
-        bVal = b[sortConfig.key];
-      }
+      let aVal = sortConfig.key === 'date'
+        ? parseDate(a.date)
+        : a[sortConfig.key];
+
+      let bVal = sortConfig.key === 'date'
+        ? parseDate(b.date)
+        : b[sortConfig.key];
 
       if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
       if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
@@ -622,126 +624,113 @@ const HistoryPage = () => {
     });
 
     return filtered;
-  }, [records, filterShift, filterStatus, fromDate, toDate, sortConfig]);
 
+  }, [records, filterShift, filterStatus, sortConfig]);
+
+  //------------------------------------------------
+  // SORT CLICK
+  //------------------------------------------------
   const requestSort = (key) => {
+
     let direction = 'asc';
+
     if (sortConfig.key === key && sortConfig.direction === 'asc') {
       direction = 'desc';
     }
+
     setSortConfig({ key, direction });
   };
- if (!attendanceData || !attendanceData.records) {
-    return <div className="empty-state">No attendance records found</div>;
-  }
+
+  //------------------------------------------------
+  // DATE FORMATTER
+  //------------------------------------------------
+  const formatDate = (isoDate) => {
+
+    if (!isoDate) return "";
+
+    const date = new Date(isoDate);
+
+    const day = String(date.getDate()).padStart(2,'0');
+    const month = String(date.getMonth()+1).padStart(2,'0');
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  };
+
+  //------------------------------------------------
+  // STATUS BADGE
+  //------------------------------------------------
   const getStatusBadge = (shift) => {
+
     if (shift === 'L') return <span className="badge leave">Leave</span>;
     if (shift === 'OFF') return <span className="badge off">Off</span>;
     if (shift === 'H') return <span className="badge holiday">Holiday</span>;
+
     return <span className="badge present">Present</span>;
   };
 
-  const clearFilters = () => {
-    setFilterShift('');
-    setFilterStatus('');
-    setFromDate('');
-    setToDate('');
-  };
+  //------------------------------------------------
+  // EMPTY STATE (AFTER HOOKS ✅)
+  //------------------------------------------------
+  if (!attendanceData) {
+    return <div className="empty-state">Loading attendance...</div>;
+  }
 
-  const formatDate = (isoDate) => {
-
-  if (!isoDate) return "";
-
-  const date = new Date(isoDate);
-
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear(); // use .slice(-2) if you want 26
-
-  return `${day}-${month}-${year}`;
-};
-
-
+  //------------------------------------------------
+  // UI
+  //------------------------------------------------
   return (
     <div className="history-page">
-      <div className="history-header">
-        <h1>Attendance History</h1>
-        <p>View and filter your attendance records</p>
-      </div>
 
-      <div className="filters-container">
-        <div className="filter-group">
-          <label>Shift</label>
-          <select value={filterShift} onChange={(e) => setFilterShift(e.target.value)}>
-            <option value="">All Shifts</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="F">F</option>
-            <option value="G">G</option>
-            <option value="COB">COB</option>
-            <option value="L">L</option>
-            <option value="OFF">OFF</option>
-            <option value="H">H</option>
-          </select>
-        </div>
+      <h1>Attendance History</h1>
 
-        <div className="filter-group">
-          <label>Status</label>
-          <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
-            <option value="">All Status</option>
-            <option value="Present">Present</option>
-            <option value="Leave">Leave</option>
-            <option value="Off">Off</option>
-            <option value="Holiday">Holiday</option>
-          </select>
-        </div>
+      <table className="attendance-table">
 
-        
+        <thead>
+          <tr>
+            <th onClick={()=>requestSort('date')}>
+              Date
+            </th>
 
-        <button className="clear-btn" onClick={clearFilters}>
-          Clear Filters
-        </button>
-      </div>
+            <th onClick={()=>requestSort('shift')}>
+              Shift
+            </th>
 
-      <div className="table-container">
-        <table className="attendance-table">
-          <thead>
+            <th>Nokia ID</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          {filteredRecords.length === 0 ? (
+
             <tr>
-              <th onClick={() => requestSort('date')}>
-                Date {sortConfig.key === 'date' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-              </th>
-              <th onClick={() => requestSort('shift')}>
-                Shift {sortConfig.key === 'shift' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-              </th>
-              <th>Nokia ID</th>
-              <th>Status</th>
+              <td colSpan="4">No records found</td>
             </tr>
-          </thead>
-          <tbody>
-            {filteredRecords.length === 0 ? (
-              <tr>
-                <td colSpan="5" style={{textAlign: 'center', padding: '2rem'}}>
-                  No records found
-                </td>
+
+          ) : (
+
+            filteredRecords.map((record,index)=>(
+              <tr key={index}>
+
+                <td>{formatDate(record.date)}</td>
+                <td>{record.shift}</td>
+                <td>{record.nokiaId}</td>
+                <td>{getStatusBadge(record.shift)}</td>
+
               </tr>
-            ) : (
-              filteredRecords.map((record, index) => (
-                <tr key={index}>
-<td>{formatDate(record.date)}</td>
-                  <td><span className="shift-badge">{record.shift}</span></td>
-                  <td>{record.nokiaId}</td>
-                  <td>{getStatusBadge(record.shift)}</td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-        
-        <div className="table-footer">
-          Showing {filteredRecords.length} of {records.length} records
-        </div>
+            ))
+
+          )}
+
+        </tbody>
+      </table>
+
+      <div>
+        Showing {filteredRecords.length} of {records.length}
       </div>
+
     </div>
   );
 };
