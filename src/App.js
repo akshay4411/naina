@@ -570,7 +570,8 @@ const HistoryPage = () => {
 
  
 
-  const { records } = attendanceData;
+  const records = attendanceData?.records || [];
+
 
   const parseDate = (dateStr) => {
     const [day, month, year] = dateStr.split('-');
