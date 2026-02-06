@@ -562,16 +562,13 @@ for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
 // =====================================================
 const HistoryPage = () => {
   const { attendanceData } = useContext(AuthContext);
-  
   const [filterShift, setFilterShift] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: 'date', direction: 'desc' });
 
-  if (!attendanceData || !attendanceData.records) {
-    return <div className="empty-state">No attendance records found</div>;
-  }
+ 
 
   const { records } = attendanceData;
 
@@ -633,7 +630,9 @@ const HistoryPage = () => {
     }
     setSortConfig({ key, direction });
   };
-
+ if (!attendanceData || !attendanceData.records) {
+    return <div className="empty-state">No attendance records found</div>;
+  }
   const getStatusBadge = (shift) => {
     if (shift === 'L') return <span className="badge leave">Leave</span>;
     if (shift === 'OFF') return <span className="badge off">Off</span>;
